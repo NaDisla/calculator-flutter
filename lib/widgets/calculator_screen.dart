@@ -22,7 +22,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void btnPress(String btnValue) {
-    List<String> operations = ['+', '-', '*', '/', '=', 'CE'];
+    List<String> operations = ['+', '-', '*', '/', '='];
     String concatResult = '';
 
     if (operations.contains(btnValue)) {
@@ -54,15 +54,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               result = finalResult.round().toString();
             });
             break;
-          case 'CE':
-            setState(() {
-              result = '0';
-              num1 = '';
-              num2 = '';
-            });
-            break;
         }
       }
+    } else if (btnValue == 'CE') {
+      setState(() {
+        result = '0';
+        num1 = '';
+        num2 = '';
+        operator = '';
+      });
     } else {
       String concatNum1 = '', concatNum2 = '';
       if (result == '0') {
