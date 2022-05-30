@@ -10,7 +10,11 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  String result = '0';
+  String result = '0',
+      num1 = '',
+      num2 = '',
+      operator = '';
+  int finalResult = 0;
 
   TextStyle btnTextStyle({double fontSize = 60.0, Color color = Colors.white}) {
     return TextStyle(
@@ -21,19 +25,41 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void btnPress(String btnValue) {
-    List<String> operations = ['+', '-', '*', '/'];
-    if (operations.contains(btnValue)) {
-    } else {
-      int btnValueConverted;
+    List<String> operations = ['+', '-', '*', '/', '='];
+    String concatResult = '';
 
+    if (operations.contains(btnValue)) {
+      switch (btnValue) {
+        case '+':
+          setState(() {
+            operator = btnValue;
+          });
+          break;
+        case '=':
+          setState(() {
+            finalResult = int.parse(num1) + int.parse(num2);
+            result = finalResult.toString();
+          });
+          break;
+      }
+    } else {
+      String concatNum1 = '',
+          concatNum2 = '';
       if (result == '0') {
         setState(() {
           result = '';
-          result += btnValue;
+          num1 = btnValue;
         });
-      } else {
+      } else if (operator.isEmpty) {
         setState(() {
-          result += btnValue;
+          concatNum1 += num1;
+          num1 += btnValue;
+        });
+      }
+      else {
+        setState(() {
+          concatNum2 += num2;
+          num2 += btnValue;
         });
       }
     }
@@ -45,7 +71,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       children: [
         //Calculator Screen
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.30,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.30,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +104,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 15.0, top: 40.0),
                 child: Text(
-                  '75 X 4 X 4',
+                  '$num1 $operator $num2',
                   style: btnTextStyle(fontSize: 30.0),
                 ),
               ),
