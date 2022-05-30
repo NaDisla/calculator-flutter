@@ -32,7 +32,10 @@ class ButtonsPadWidget extends StatelessWidget {
               child: Column(
                 children: [
                   buildButton(
-                      btnValue: '+/-', btnType: 'op', pressFnc: pressFnc),
+                      btnValue: '+/-',
+                      btnType: 'op',
+                      pressFnc: pressFnc,
+                      fontSize: 28.8),
                   buildButton(btnValue: '8', pressFnc: pressFnc),
                   buildButton(btnValue: '5', pressFnc: pressFnc),
                   buildButton(btnValue: '2', pressFnc: pressFnc),
@@ -74,7 +77,8 @@ class ButtonsPadWidget extends StatelessWidget {
 Widget buildButton(
     {required String btnValue,
     String btnType = 'num',
-    required Function pressFnc}) {
+    required Function pressFnc,
+    double fontSize = 30.0}) {
   return Container(
     height: 82.0,
     width: 95.0,
@@ -92,8 +96,8 @@ Widget buildButton(
       ),
       child: Text(
         btnValue,
-        style: const TextStyle(
-          fontSize: 30.0,
+        style: TextStyle(
+          fontSize: fontSize,
           fontWeight: FontWeight.bold,
         ),
       ),
