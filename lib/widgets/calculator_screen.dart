@@ -10,8 +10,13 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  String result = '0', num1 = '', num2 = '', operator = '';
-  double finalResult = 0;
+  String result = '0',
+      num1 = '',
+      num2 = '',
+      operator = '',
+      input = '',
+      equals = '';
+  int stateControl = 1;
 
   TextStyle btnTextStyle({double fontSize = 60.0, Color color = Colors.white}) {
     return TextStyle(
@@ -22,39 +27,87 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   }
 
   void btnPress(String btnValue) {
-    List<String> operations = ['+', '-', '*', '/', '='];
-    String concatResult = '';
+    List<String> operations = ['+', '-', '×', '÷'];
 
-    if (operations.contains(btnValue)) {
-      if (btnValue != '=') {
-        setState(() => operator = btnValue);
+    if (!operations.contains(btnValue) &&
+        btnValue != '.' &&
+        btnValue != '=' &&
+        btnValue != '±' &&
+        btnValue != 'CE') {
+      if (result == '0') {
+        setState(() => result = '');
+      }
+
+      if (btnValue == '0' && (num1 == '0' || num2 == '0')) {
+        setState(() => input = btnValue);
+      } else if (btnValue != '0' && input == '0') {
+        setState(() => input = btnValue);
       } else {
-        switch (operator) {
-          case '+':
+        setState(() => input += btnValue);
+      }
+
+      if (stateControl == 1) {
+        num1 = input;
+      } else {
+        num2 += btnValue;
+      }
+    } else if (operations.contains(btnValue) &&
+        num1.isNotEmpty &&
+        num2.isEmpty) {
+      operator = btnValue;
+      stateControl = 2;
+      setState(() {
+        input += operator;
+      });
+    } else if (btnValue == '.') {
+      if (result == '0') {
+        setState(() {
+          result = '';
+          input = '0.';
+        });
+      } else if (input == '0.') {
+        setState(() {
+          input = input;
+        });
+      } else {
+        if (stateControl == 1 && !num1.contains('.')) {
+          setState(() {
+            input = num1 + btnValue;
+          });
+        } else if (stateControl == 2) {
+          List<String> splitPoints = input.split('.');
+          if (splitPoints.length <= 2) {
             setState(() {
-              finalResult = double.parse(num1) + double.parse(num2);
-              result = finalResult.round().toString();
+              input += btnValue;
+              num2 += btnValue;
             });
-            break;
-          case '-':
-            setState(() {
-              finalResult = double.parse(num1) - double.parse(num2);
-              result = finalResult.round().toString();
-            });
-            break;
-          case '*':
-            setState(() {
-              finalResult = double.parse(num1) * double.parse(num2);
-              result = finalResult.round().toString();
-            });
-            break;
-          case '/':
-            setState(() {
-              finalResult = int.parse(num1) / int.parse(num2);
-              result = finalResult.round().toString();
-            });
-            break;
+          }
         }
+      }
+    } else if (btnValue == '=') {
+      setState(() => equals = '=');
+
+      switch (operator) {
+        case '+':
+          setState(() {
+            result = (double.parse(num1) + double.parse(num2)).toString();
+          });
+          break;
+        case '-':
+          setState(() {
+            result = (double.parse(num1) - double.parse(num2)).toString();
+          });
+          break;
+        case '×':
+          setState(() {
+            result = (double.parse(num1) * double.parse(num2)).toString();
+          });
+          break;
+        case '÷':
+          setState(() {
+            result = (double.parse(num1) / double.parse(num2)).toString();
+          });
+          break;
       }
     } else if (btnValue == 'CE') {
       setState(() {
@@ -62,25 +115,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         num1 = '';
         num2 = '';
         operator = '';
+        input = '';
+        stateControl = 1;
+        equals = '';
       });
-    } else {
-      String concatNum1 = '', concatNum2 = '';
-      if (result == '0') {
-        setState(() {
-          result = '';
-          num1 = btnValue;
-        });
-      } else if (operator.isEmpty) {
-        setState(() {
-          concatNum1 += num1;
-          num1 += btnValue;
-        });
-      } else {
-        setState(() {
-          concatNum2 += num2;
-          num2 += btnValue;
-        });
-      }
     }
   }
 
@@ -88,14 +126,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        //Calculator Screen
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.30,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //Result
               Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,
@@ -106,7 +142,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '=',
+                      equals,
                       style: btnTextStyle(color: AppTheme.operationsColor),
                     ),
                     Text(
@@ -116,11 +152,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   ],
                 ),
               ),
-              //Operations
               Padding(
                 padding: const EdgeInsets.only(right: 15.0, top: 40.0),
                 child: Text(
-                  '$num1 $operator $num2',
+                  input,
                   style: btnTextStyle(fontSize: 30.0),
                 ),
               ),
