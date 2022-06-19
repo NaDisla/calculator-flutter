@@ -1,16 +1,6 @@
-# calculator
+# Calculator App 📱
 
-A new Flutter project.
+A simple calculator made with Flutter, for Android and iOS devices.
+Coming soon on Google Play and App Store! 😉
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![android-video](https://user-images.githubusercontent.com/51084681/174497072-2fecde1c-60be-444f-afcc-ccb83097b7cb.gif) ![ios-video](https://user-images.githubusercontent.com/51084681/174497145-823a080d-92d5-461a-a15e-70ec071eda19.gif)
