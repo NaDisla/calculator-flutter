@@ -1,5 +1,5 @@
 import 'package:calculator/themes/app_theme.dart';
-import 'package:calculator/widgets/calculator_screen.dart';
+import 'package:calculator/screens/calculator_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class CalculatorApp extends StatelessWidget {
       home: SafeArea(
         child: Scaffold(
           backgroundColor: AppTheme.backgroundDarkColor,
-          body: CalculatorScreen(),
+          body: const CalculatorScreen(),
         ),
       ),
     );
