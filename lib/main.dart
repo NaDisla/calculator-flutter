@@ -2,9 +2,7 @@ import 'package:calculator/themes/app_theme.dart';
 import 'package:calculator/screens/calculator_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const CalculatorApp());
-}
+void main() => runApp(const CalculatorApp());
 
 class CalculatorApp extends StatelessWidget {
   const CalculatorApp({Key? key}) : super(key: key);
